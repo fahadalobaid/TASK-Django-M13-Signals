@@ -19,7 +19,10 @@ class CoffeeShopAddress(models.Model):
     city = models.CharField(max_length=20, default="")
 
     def __str__(self) -> str:
-        return f"{self.coffee_shop.name} - {self.city}"
+        try:
+            return f"{self.coffee_shop.name} - {self.city}"
+        except CoffeeShop.DoesNotExist:
+            return str(self.city)
 
 
 class CoffeeShop(models.Model):
