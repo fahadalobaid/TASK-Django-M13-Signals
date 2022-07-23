@@ -52,6 +52,17 @@ We want to be notified every time a new cafe owner has joined our platform. To d
      -------------------------------------------------------------------------------
      ```
 
+## Slugging
+
+[Slug](https://docs.djangoproject.com/en/4.0/glossary/#term-slug) is a newspaper term. A slug is a short label for something, containing only letters, numbers, underscores or hyphens. They’re generally used in URLs. We want to auto-generate slugs for our `CoffeeShop` instances.
+
+1. Create a function called `slugify_coffee_shop` in `coffeeshops/signals.py` and decorate it with a `pre_save` signal that has `CoffeeShop` as its sender (read about `pre_save` signals [here](https://docs.djangoproject.com/en/4.0/ref/signals/#pre-save)).
+2. Check if `instance` does not have a `slug`.
+3. If our `instance` does not have a slug then just set `instance.slug` equal to `create_slug(instance)` where `create_slug` is imported from `utils` (i.e., `from utils import create_slug`).
+4. Test out your signal on the admin site, by creating a new `CoffeeShop`, you should see a `slug` assigned to your `CoffeeShop` after saving.
+
+**BONUS:** if you can tell an instructor why a `pre_save` signal must be used for our `slugify_coffee_shop` receiver and not a `post_save` signal, you get extra points.
+
 ## Address Manager
 
 We want to make sure that an address object always exists for a `CoffeeShop` even one was never created or if it is deleted.
@@ -63,6 +74,7 @@ We want to make sure that an address object always exists for a `CoffeeShop` eve
    1. Create a `CoffeeShopAddress` object.
    2. Set `instance.location` equal to the new `CoffeeShopAddress` object you've created.
    3. Save your instance.
+3. Test out your signal on the admin site, by creating a new `CoffeeShop` and leaving the `location` field empty, you should see a default `location` assigned to your `CoffeeShop` after saving.
 
 ### Restore Default Address
 
@@ -71,18 +83,9 @@ We want to make sure that an address object always exists for a `CoffeeShop` eve
 3. Create a new `CoffeeShopAddress` instance.
 4. Set `coffee_shop.location` equal to the new `CoffeeShopAddress` object you've created.
 5. Save your `coffee_shop` instance.
+6. Test out your signal on the admin site, by deleting a location from any `CoffeeShop`, you should see a default `location` assigned to the `CoffeeShop`.
 
 **BONUS:** if you can tell an instructor why a `post_delete` signal must be used for our `restore_default_address` receiver and not a `pre_delete` signal, you get extra points.
-
-## Slugging
-
-[Slug](https://docs.djangoproject.com/en/4.0/glossary/#term-slug) is a newspaper term. A slug is a short label for something, containing only letters, numbers, underscores or hyphens. They’re generally used in URLs. We want to auto-generate slugs for our `CoffeeShop` instances.
-
-1. Create a function called `slugify_coffee_shop` in `coffeeshops/signals.py` and decorate it with a `pre_save` signal that has `CoffeeShop` as its sender (read about `pre_save` signals [here](https://docs.djangoproject.com/en/4.0/ref/signals/#pre-save)).
-2. Check if `instance` does not have a `slug`.
-3. If our `instance` does not have a slug then just set `instance.slug` equal to `create_slug(instance)` where `create_slug` is imported from `utils` (i.e., `from utils import create_slug`).
-
-**BONUS:** if you can tell an instructor why a `pre_save` signal must be used for our `slugify_coffee_shop` receiver and not a `post_save` signal, you get extra points.
 
 ## Inventory Management
 
@@ -90,3 +93,4 @@ We want to manage our `Drink` inventory and mark `is_out_of_stock` if our drinks
 
 1. Create a function called `slugify_coffee_shop` in `coffeeshops/signals.py` and decorate it with a `pre_save` signal that has `Drink` as its sender.
 2. Set `instance.is_out_of_stock` to `False` if `instance.stock_count` is greater than zero and vice-versa.
+3. Test out your signal on the admin site, by setting a stock count greater than zero to a drink, and you should see `is_out_of_stock` as `False` after saving.
