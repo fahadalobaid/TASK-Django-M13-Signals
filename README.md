@@ -83,3 +83,10 @@ We want to make sure that an address object always exists for a `CoffeeShop` eve
 3. If our `instance` does not have a slug then just set `instance.slug` equal to `create_slug(instance)` where `create_slug` is imported from `utils` (i.e., `from utils import create_slug`).
 
 **BONUS:** if you can tell an instructor why a `pre_save` signal must be used for our `slugify_coffee_shop` receiver and not a `post_save` signal, you get extra points.
+
+## Inventory Management
+
+We want to manage our `Drink` inventory and mark `is_out_of_stock` if our drinks go out of stock.
+
+1. Create a function called `slugify_coffee_shop` in `coffeeshops/signals.py` and decorate it with a `pre_save` signal that has `Drink` as its sender.
+2. Set `instance.is_out_of_stock` to `False` if `instance.stock_count` is greater than zero and vice-versa.
