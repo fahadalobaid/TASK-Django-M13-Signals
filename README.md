@@ -73,3 +73,13 @@ We want to make sure that an address object always exists for a `CoffeeShop` eve
 5. Save your `coffee_shop` instance.
 
 **BONUS:** if you can tell an instructor why a `post_delete` signal must be used for our `restore_default_address` receiver and not a `pre_delete` signal, you get extra points.
+
+## Slugging
+
+[Slug](https://docs.djangoproject.com/en/4.0/glossary/#term-slug) is a newspaper term. A slug is a short label for something, containing only letters, numbers, underscores or hyphens. They’re generally used in URLs. We want to auto-generate slugs for our `CoffeeShop` instances.
+
+1. Create a function called `slugify_coffee_shop` in `coffeeshops/signals.py` and decorate it with a `pre_save` signal that has `CoffeeShop` as its sender (read about `pre_save` signals [here](https://docs.djangoproject.com/en/4.0/ref/signals/#pre-save)).
+2. Check if `instance` does not have a `slug`.
+3. If our `instance` does not have a slug then just set `instance.slug` equal to `create_slug(instance)` where `create_slug` is imported from `utils` (i.e., `from utils import create_slug`).
+
+**BONUS:** if you can tell an instructor why a `pre_save` signal must be used for our `slugify_coffee_shop` receiver and not a `post_save` signal, you get extra points.
