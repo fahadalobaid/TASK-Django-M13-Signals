@@ -51,3 +51,25 @@ We want to be notified every time a new cafe owner has joined our platform. To d
      A new cafe owner has joined named Guido van Rossum.
      -------------------------------------------------------------------------------
      ```
+
+## Address Manager
+
+We want to make sure that an address object always exists for a `CoffeeShop` even one was never created or if it is deleted.
+
+### Create Default Address
+
+1. Create a function called `add_default_address` in `coffeeshops/signals.py` and decorate it with a `post_save` signal that has `CoffeeShop` as its sender.
+2. Check if the `instance` has been `created` and if `instance.location` is empty.
+   1. Create a `CoffeeShopAddress` object.
+   2. Set `instance.location` equal to the new `CoffeeShopAddress` object you've created.
+   3. Save your instance.
+
+### Restore Default Address
+
+1. Create a function called `restore_default_address` and decorate it with a `post_delete` signal that has `CoffeeShopAddress` as its sender (read about `post_delete` signals [here](https://docs.djangoproject.com/en/4.0/ref/signals/#post-delete)).
+2. Get the coffee shop from the deleted `instance` (hint: use the related name `coffee_shop`) and store it in a variable called `coffee_shop`.
+3. Create a new `CoffeeShopAddress` instance.
+4. Set `coffee_shop.location` equal to the new `CoffeeShopAddress` object you've created.
+5. Save your `coffee_shop` instance.
+
+**BONUS:** if you can tell an instructor why a `post_delete` signal must be used for our `restore_default_address` receiver and not a `pre_delete` signal, you get extra points.
